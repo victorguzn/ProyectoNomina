@@ -2,6 +2,9 @@
 #include<cstdlib>
 #include<conio.h>
 #include<iostream>
+#include<fstream>
+#include <iomanip>
+#include <time.h>
 
 #define USER "VictorJJ"
 #define PASS "123456"
@@ -68,3 +71,30 @@ bool ingreso::loginUsuarios()
     }
     return ingreso;
 }
+
+/*void ingreso::bitacora(){
+
+    system("cls");
+
+    string accion = "";
+
+    time_t tiempo;
+    tiempo = time(NULL);
+    struct tm * fecha;
+    fecha = localtime(&tiempo);
+
+    string usuario = USER;
+    accion = "Ha ingresado al sistema";
+
+    ofstream archivo("BITACORA.dat", ios::binary | ios::app | ios::out);
+
+    if(!archivo){
+        cout<<"El archivo de Bitacora no existe, por lo que se ha creado uno"<<endl;
+        exit(0);
+    }
+
+    archivo<<std::left<<std::setw(15)<< "Código" <<std::left<<std::setw(15)<< usuario <<std::left<<std::setw(15)<< "Acción realizada: " <<std::left<<std::setw(15)<< accion<<std::left<<std::setw(15)<< "Día: " <<std::left<<std::setw(15)<< fecha->tm_mday <<std::left<<std::setw(15)<< "Mes: " <<std::left<<std::setw(15)<< fecha->tm_mon+1<<std::left<<std::setw(15)<< "Año: " <<std::left<<std::setw(15)<< fecha->tm_year+1900<<std::left<<std::setw(15)<< "Hora: " <<std::left<<std::setw(15)<< fecha->tm_hour<<std::left<<std::setw(15)<< "Minuto: " <<std::left<<std::setw(15)<< fecha->tm_min<<std::left<<std::setw(15)<< "Segundo: " <<std::left<<std::setw(15)<< fecha->tm_sec<<"\n";
+
+    archivo.close();
+}*/
+

@@ -5,12 +5,13 @@
 #include <conio.h>
 #include <iomanip>
 #include "generacionnomina.h"
+#include "empleados.h"
 #include "menus.h"
 
 using namespace std;
 
 generacionnomina::generacionnomina(){
- double horast, sueldomedio, iva, sueldofinal, sueldoiva;
+ double horast, sueldomedio, iva, sueldofinal, sueldoiva, isr, sueldoisr, igss, sueldoigss, bonificacion, sueldobonificacion, sueldocomb;
 }
 
 generacionnomina::~generacionnomina(){
@@ -68,6 +69,10 @@ void generacionnomina::menuprincipalgeneracionnomina()
 
 void generacionnomina::generar()
 {
+    double calculo;
+    double calculo2;
+    double sueldofinal;
+
 	system("cls");
 	fstream archivo, archivo2;
 	cout<<"\n______________________________________________________________________________________"<<endl;
@@ -81,18 +86,34 @@ void generacionnomina::generar()
 	cin>>horast;
 
 	iva = 0.12;
+	isr = 0.05;
+	bonificacion = 250;
+	igss = 0.0483;
+
 	sueldoiva = sueldomedio - (sueldomedio * iva);
-	sueldofinal = sueldoiva;
+	sueldoisr = sueldomedio - (sueldomedio * isr);
+	sueldoigss = sueldomedio - (sueldomedio * igss);
+
+	calculo = sueldoiva + sueldoisr + sueldoigss;
+
+    sueldobonificacion = bonificacion + sueldomedio;
+
+	sueldocomb = sueldomedio - calculo;
 
 	if(horast > 160){
-        sueldofinal = sueldoiva + ((horast - 160) * 50);
+        calculo2 = (horast - 160) * 50;
+        sueldofinal = (sueldocomb + calculo2 + bonificacion);
+	}
+
+	else{
+        sueldofinal = (sueldocomb + bonificacion);
 	}
 
     archivo.open("nominasgeneradas.dat", ios::binary | ios::app | ios::out);
     archivo2.open("nominasgeneradas2.dat", ios::binary | ios::app | ios::out);
 
 
-	archivo<<std::left<<std::setw(15)<< sueldomedio <<std::left<<std::setw(15)<< horast <<std::left<<std::setw(15)<< iva <<std::left<<std::setw(15)<< sueldoiva <<std::left<<std::setw(15)<< sueldofinal<<"\n";
+	archivo<<std::left<<std::setw(15)<< sueldomedio <<std::left<<std::setw(15)<< horast <<std::left<<std::setw(15)<< iva <<std::left<<std::setw(15)<< sueldoiva <<std::left<<std::setw(15)<< igss <<std::left<<std::setw(15)<< sueldoigss <<std::left<<std::setw(15)<< isr <<std::left<<std::setw(15)<< sueldoisr <<std::left<<std::setw(15)<< bonificacion <<std::left<<std::setw(15)<< sueldobonificacion <<std::left<<std::setw(15)<< sueldocomb << std::left<<std::setw(15)<< sueldofinal<<"\n";
 
 	archivo.close();
 
@@ -118,6 +139,48 @@ void generacionnomina::generar()
       archivo2.write(
          reinterpret_cast<const char*>(&sueldoiva),
          sizeof( sueldoiva ) );
+    }
+
+    for( int i = 0; i < 50; i++ ){
+      archivo2.write(
+         reinterpret_cast<const char*>(&isr),
+         sizeof( isr ) );
+    }
+
+    for( int i = 0; i < 50; i++ ){
+      archivo2.write(
+         reinterpret_cast<const char*>(&sueldoisr),
+         sizeof( sueldoisr ) );
+    }
+
+    for( int i = 0; i < 50; i++ ){
+      archivo2.write(
+         reinterpret_cast<const char*>(&igss),
+         sizeof( igss ) );
+    }
+
+    for( int i = 0; i < 50; i++ ){
+      archivo2.write(
+         reinterpret_cast<const char*>(&sueldoigss),
+         sizeof( sueldoigss ) );
+    }
+
+    for( int i = 0; i < 50; i++ ){
+      archivo2.write(
+         reinterpret_cast<const char*>(&bonificacion),
+         sizeof( bonificacion ) );
+    }
+
+    for( int i = 0; i < 50; i++ ){
+      archivo2.write(
+         reinterpret_cast<const char*>(&sueldobonificacion),
+         sizeof( sueldobonificacion ) );
+    }
+
+    for( int i = 0; i < 50; i++ ){
+      archivo2.write(
+         reinterpret_cast<const char*>(&sueldocomb),
+         sizeof( sueldocomb ) );
     }
 
     for( int i = 0; i < 50; i++ ){
@@ -150,17 +213,40 @@ void generacionnomina::vernominas()
 
 	else
 	{
-		archivo >> sueldomedio >> horast >> iva >> sueldoiva >> sueldofinal;
+		archivo >> sueldomedio >> horast >> iva >> sueldoiva >> igss >> sueldoigss >> isr >> sueldoisr >> bonificacion >> sueldobonificacion >> sueldocomb >> sueldofinal;
 
 		while(!archivo.eof())
 		{
 			total++;
-			cout<<"\n\n\t Sueldo medio: "<< sueldomedio <<endl;
-			cout<<"\t Horas trabajadas: "<< horast <<endl;
-			cout<<"\t IVA: "<< iva <<endl;
-			cout<<"\t Sueldo con IVA: "<< sueldoiva <<endl;
-			cout<<"\t Sueldo final: "<< sueldofinal <<endl;
-			archivo >> sueldomedio >> horast >> iva >> sueldoiva >> sueldofinal;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"|                     CUADRO DE NOMINAS                     |"<<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"\n| Sueldo medio:               |"<< sueldomedio <<"                         |"<<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"| Horas trabajadas:           |"<< horast <<"                          |"<<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"| IVA:                        |"<< iva <<"                         |"<<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"| Sueldo - IVA:              |"<< sueldoiva <<"                          |" <<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"| IGSS:                        |"<< igss <<"                         |"<<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"| Sueldo - IGSS:                       |"<< sueldoigss <<"                         |"<<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"| ISR                |"<< isr <<"                      |"<<endl;
+			cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"\n| Sueldo - ISR:               |"<< sueldoisr <<"                         |"<<endl;
+            cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"\n| Bonificación:               |"<< bonificacion <<"                         |"<<endl;
+            cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"\n| Sueldo + Bonificación:               |"<< sueldobonificacion <<"                         |"<<endl;
+            cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"\n| Sueldo total:               |"<< sueldocomb <<"                         |"<<endl;
+            cout<<"-------------------------------------------------------------"<<endl;
+			cout<<"\n| Sueldo final:               |"<< sueldofinal <<"                         |"<<endl;
+            cout<<"-------------------------------------------------------------"<<endl;
+            archivo >> sueldomedio >> horast >> iva >> sueldoiva >> igss >> sueldoigss >> isr >> sueldoisr >> bonificacion >> sueldobonificacion >> sueldocomb >> sueldofinal;
+
 		}
 		if(total==0)
 		{

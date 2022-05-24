@@ -78,7 +78,7 @@ void menus::menuGeneral(){
         punto.menu();
         break;
     case 7:
-        bita.menubitacora();
+        //bita.menubitacora();
         break;
     case 8:
         exit(0);
@@ -115,9 +115,9 @@ void menus::mantenimientos(){
         cout << "\t\t\t Selecciona tu opcion: ";
         cin>>choice;
 
+        //Puestos pueston;
         impuestos punto;
         empleados gomu;
-        Puestos pueston;
 
         switch(choice)
         {
@@ -125,7 +125,7 @@ void menus::mantenimientos(){
     	gomu.menu();
 		break;
     case 2:
-		pueston.menuprincipalpuestos();
+	//	pueston.menuprincipalpuestos();
 		break;
 	case 3:
 		//menu3();

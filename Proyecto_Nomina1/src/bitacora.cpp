@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include <istream>
 #include <fstream>
 #include <stdlib.h>
@@ -7,6 +7,12 @@
 #include <conio.h>
 #include <iomanip>
 #include "bitacora.h"
+#include "informe.h"
+#include "empleados.h"
+#include "puestos.h"
+#include "generacionnomina.h"
+#include "impuestos.h"
+#include "ingreso.h"
 #include "menus.h"
 
 void bitacora::menubitacora()
@@ -21,22 +27,12 @@ void bitacora::menubitacora()
     cout<<"-"<<endl;
     cout<<"Bienvenido al menu de la bitacora �que deseas hacer?"<<endl;
     cout<<"Selecciona la opcion 1 o 2"<<endl;
-    cout<<"   1. A�adir entrada en la bitacora"<<endl;
-    cout<<"   2. Visualizar entradas a�adidas"<<endl;
-    cout<<"   3. Salir"<<endl;
+    cout<<"   1. Visualizar registros"<<endl;
+    cout<<"   2. Salir"<<endl;
     cin>>opcion;
     menus bita;
 
     if(opcion == 1){
-
-    bitacora::limpiarpantalla();
-    bitacora::registrobitacora();
-
-    system("pause");
-    return ;
-    }
-
-    if(opcion == 2){
 
         bitacora::limpiarpantalla();
 
@@ -50,7 +46,7 @@ void bitacora::menubitacora()
         return ;
     }
 
-    if(opcion == 3){
+    if(opcion == 2){
         bita.menuGeneral();
     }
 }
@@ -59,113 +55,30 @@ void bitacora::limpiarpantalla(){
     system("cls");
 }
 
-void bitacora::verentradas(){
-    fstream archivo2;
+void ingreso::bitacora(){
 
-    int opcion_v;
-    string reproducir;
+    system("cls");
 
-    archivo2.open("BITACORA2.dat", ios::in);
+    string accion = "";
 
-    if(archivo2.fail()){
-        cout<<"No se pudo abrir el archivo :/ por favor, comprueba";
-        exit(1);
+    time_t tiempo;
+    tiempo = time(NULL);
+    struct tm * fecha;
+    fecha = localtime(&tiempo);
+
+    string usuario = USER;
+    accion = "Ha ingresado al sistema";
+
+    ofstream archivo("BITACORA.dat", ios::binary | ios::app | ios::out);
+
+    if(!archivo){
+        cout<<"El archivo de Bitacora no existe, por lo que se ha creado uno"<<endl;
+        exit(0);
     }
 
-    while(!archivo2.eof()){
-        getline(archivo2, reproducir);
-        cout<<reproducir<<endl;
-    }
+    archivo<<std::left<<std::setw(15)<< "Código" <<std::left<<std::setw(15)<< usuario <<std::left<<std::setw(15)<< "Acción realizada: " <<std::left<<std::setw(15)<< accion<<std::left<<std::setw(15)<< "Día: " <<std::left<<std::setw(15)<< fecha->tm_mday <<std::left<<std::setw(15)<< "Mes: " <<std::left<<std::setw(15)<< fecha->tm_mon+1<<std::left<<std::setw(15)<< "Año: " <<std::left<<std::setw(15)<< fecha->tm_year+1900<<std::left<<std::setw(15)<< "Hora: " <<std::left<<std::setw(15)<< fecha->tm_hour<<std::left<<std::setw(15)<< "Minuto: " <<std::left<<std::setw(15)<< fecha->tm_min<<std::left<<std::setw(15)<< "Segundo: " <<std::left<<std::setw(15)<< fecha->tm_sec<<"\n";
 
-    cout<<"______________________________"<<endl;
-    cout<<"-"<<endl;
-    cout<<"- Escribe 1 y ejecuta para volver al menu principal - "<<endl;
-    cin>>opcion_v;
-
-    if(opcion_v = 1){
-        bitacora::limpiarpantalla();
-        bitacora::menubitacora();
-    }
+    archivo.close();
 }
 
-void bitacora::registrobitacora(){
-    fstream archivo( "BITACORA.dat", ios::app | ios::binary);
-    fstream archivo2( "BITACORA2.dat", ios::app | ios::binary);
-
-    int opcion_r;
-    string fecha, nota_dia, nombre;
-
-    if (archivo.fail()){
-      cerr<<"Archivo no encontrado, por favor verifica"<<endl;
-      exit( 1 );
-    }
-
-    if (archivo2.fail()){
-      cerr<<"Archivo no encontrado, por favor verifica"<<endl;
-      exit( 1 );
-    }
-
-    cout<<"______________________________"<<endl;
-    cout<<"------| NUEVA ENTRADA |------"<<endl;
-    cout<<"______________________________"<<endl;
-    cout<<"-"<<endl;
-
-    archivo2<<"_______________________________________"<<endl;
-    archivo2<<"------| ENTRADAS DE LA BITACORA |------"<<endl;
-    archivo2<<"---------------------------------------"<<endl;
-
-    cout<<"\nEscribe la fecha: ";
-    cin.ignore();
-    getline(cin,fecha);
-    archivo2<<"------------- FECHA: ";
-
-    archivo2<<fecha<<endl;;
-
-    cout<<"\nEscribe en la bitacora: "<<endl;
-    getline(cin,nota_dia);
-    archivo2<<"----------------------"<<endl;
-
-    archivo2<<"- ";
-    archivo2<<nota_dia<<endl;
-
-    cout<<"\nEscribe tu nombre: ";
-    getline(cin,nombre);
-    archivo2<<"--- NOMBRE: ";
-
-    archivo2<<"- ";
-    archivo2<<nombre<<endl;
-
-    archivo2<<"----------------------\n"<<endl;
-
-    for( int i = 0; i < 50; i++ ){
-      archivo.write(
-         reinterpret_cast<const char*>(&fecha),
-         sizeof( fecha ) );
-    }
-
-    for( int i = 0; i < 50; i++ ){
-      archivo.write(
-         reinterpret_cast<const char*>(&nota_dia),
-         sizeof( nota_dia ) );
-    }
-
-    for( int i = 0; i < 50; i++ ){
-      archivo.write(
-         reinterpret_cast<const char*>(&nombre),
-         sizeof( nombre ) );
-    }
-
-    cout<<"----------------------------------------------------------"<<endl;
-    cout<<"�Felicidades! �Acabas de poner tu registro en la bitacora!"<<endl;
-    cout<<"----------------------------------------------------------"<<endl;
-
-    cout<<"______________________________"<<endl;
-    cout<<"-"<<endl;
-    cout<<"- Escribe 1 y ejecuta para volver al menu principal - "<<endl;
-    cin>>opcion_r;
-
-    if(opcion_r = 1){
-        bitacora::limpiarpantalla();
-        bitacora::menubitacora();
-    }
-}
+*/

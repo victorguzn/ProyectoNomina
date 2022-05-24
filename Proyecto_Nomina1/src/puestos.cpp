@@ -1,179 +1,314 @@
 #include <iostream>
+#include "puestos.h"
 #include<fstream>
 #include<stdlib.h>
 #include<cstdlib>
 #include<conio.h>
 #include<iomanip>
-#include "puestos.h"
 #include "menus.h"
 
 using namespace std;
 
-Puestos::Puestos(){
- string nombrepuesto, area, segmento, salario, vacantes;
-}
-
-Puestos::~Puestos(){
-
-}
-
-void Puestos::menuprincipalpuestos()
+Puestos::Puestos()
 {
-    int opcion;
-	int x;
+ string id,nombrepuesto, area, segmento, salario, vacantes;
+}
 
-	do{
+Puestos::~Puestos()
+{
 
+}
+
+void Puestos::menuprincipalpuestos(){
+
+    int eleccion;
+	char x;
+	do
+    {
 	system("cls");
 
-	cout<<"----------------------------------------"<<endl;
-	cout<<"\t\t |   GDUR DE PUESTOS DE TRABAJO  |"<<endl;
-	cout<<"----------------------------------------"<<endl;
-
-	cout<<"\t 1. Ingresar datos de nuevos puestos de trabajo"<<endl;
-	cout<<"\t 2. Ver puestos de trabajo actuales"<<endl;
-	cout<<"\t 3. Salir"<<endl;
-
-    cout<<"-"<<endl;
-
-    cout<<"\n\t RESPUESTA: ";
-    cin>>opcion;
+	cout<<"\t\t\t----------------------------------------"<<endl;
+	cout<<"\t\t\t |   SISTEMA GESTION EMPLEADOS  |"<<endl;
+	cout<<"\t\t\t----------------------------------------"<<endl;
+	cout<<"\t\t\tElige un número del 1 al 6 según lo que desees hacer"<<endl;
+	cout<<"\t\t\t----------------------------------------"<<endl;
+	cout<<"\t\t\t 1. Ingreso de nuevos puestos de trabajo"<<endl;
+	cout<<"\t\t\t 2. Despliegue de puestos de trabajo"<<endl;
+	cout<<"\t\t\t 3. Modificar puestos de trabajo"<<endl;
+	cout<<"\t\t\t 4. Buscar puestos de trabajo"<<endl;
+	cout<<"\t\t\t 5. Borrar puestos de trabajo"<<endl;
+	cout<<"\t\t\t 6. Salir"<<endl;
+	cout<<"\t\t\t-------------------------------"<<endl;
+	cout<<"Elige qué deseas hacer: ";
+    cin>>eleccion;
     menus pueston;
 
-    switch(opcion)
+    switch(eleccion)
     {
     case 1:
     	do
     	{
-    		nuevopuesto();
-    		cout<<"\n\t �Agregar un nuevo puesto?"<<endl;
-    		cout<<"\n\t 1. Si"<<endl;
-    		cout<<"\n\t 2. No"<<endl;
-    		cout<<"-"<<endl;
-    		cout<<"\n\t RESPUESTA:";
+    		insert();
+    		cout<<"\n\t\t\t Agregar otro puesto de trabajo(Y,N): ";
     		cin>>x;
-		}while(x==1);
+		}while(x=='y'||x=='Y');
 		break;
 	case 2:
-		verpuestos();
+		desplegar();
 		break;
-    case 3:
-        pueston.menuGeneral();
-        break;
+	case 3:
+		modificar();
+		break;
+	case 4:
+		search();
+		break;
+	case 5:
+		eliminar();
+		break;
+	case 6:
+		pueston.menuGeneral();
 	default:
-		cout<<"\n\t Por favor, elegir un numero del 1 al 3 segun dice la pantalla";
+		cout<<"\n\t\t\t Opcion no valida. Elige otro número";
 	}
 	getch();
-    }while(opcion!= 2);
+    }while(eleccion!= 6);
 }
 
-void Puestos::nuevopuesto()
-{
-	system("cls");
-	fstream archivo, archivo2;
-	cout<<"\n______________________________________________________________________________________"<<endl;
-	cout<<"\n----------------------------------- INGRESO DE DATOS ----------------------------------"<<endl;
-	cout<<"\n--------------------------------------------------------------------------------------"<<endl;
+void Puestos::insert(){
 
-	cout<<"\tIngresa nombre del puesto de trabajo: ";
+	system("cls");
+	fstream archivo;
+
+	cout<<"\n------------------------------------------------------------------------------------------------------------------------"<<endl;
+	cout<<"\n-------------------------------------------------Agregar puestos de trabajo ---------------------------------------------"<<endl;
+	cout<<"\n------------------------------------------------------------------------------------------------------------------------"<<endl;
+
+	cout<<"\t\t\tIngresa ID del puesto de trabajo: ";
+	cin>>id;
+
+	cout<<"\t\t\tIngresa Nombre del puesto de trabajo: ";
 	cin>>nombrepuesto;
 
-	cout<<"\tIngresa el area de trabajo de dicho puesto: ";
+	cout<<"\t\t\tIngresa el area de trabajo: ";
 	cin>>area;
 
-	cout<<"\tIngresa el segmento de dicho puesto: ";
+	cout<<"\t\t\tIngresa segmento del puesto de trabajo: ";
 	cin>>segmento;
 
-	cout<<"\tIngresa el salario minimo de dicho puesto: ";
+	cout<<"\t\t\tIngresa el salario medio del puesto de trabajo: ";
 	cin>>salario;
 
-	cout<<"\t�Hay vacantes disponibles? �Cuantas? ";
+    cout<<"\t\t\tIngresa el número de vacantes disponible del puesto de trabajo: ";
 	cin>>vacantes;
 
     archivo.open("puestosdetrabajo.dat", ios::binary | ios::app | ios::out);
-    archivo2.open("puestosdetrabajo2.dat", ios::binary | ios::app | ios::out);
-
-
-	archivo<<std::left<<std::setw(15)<< nombrepuesto <<std::left<<std::setw(15)<< area <<std::left<<std::setw(15)<< segmento <<std::left<<std::setw(15)<< salario <<std::left<<std::setw(15)<< vacantes<<"\n";
+	archivo<<std::left<<std::setw(15)<< id <<std::left<<std::setw(15)<< nombrepuesto <<std::left<<std::setw(15)<< area<< std::left<<std::setw(15)<< segmento <<std::left<<std::setw(15)<< salario <<std::left<<std::setw(15)<< vacantes<<"\n";
 
 	archivo.close();
-
-    for( int i = 0; i < 50; i++ ){
-      archivo2.write(
-         reinterpret_cast<const char*>(&nombrepuesto),
-         sizeof( nombrepuesto ) );
-    }
-
-    for( int i = 0; i < 50; i++ ){
-      archivo2.write(
-         reinterpret_cast<const char*>(&area),
-         sizeof( area ) );
-    }
-
-    for( int i = 0; i < 50; i++ ){
-      archivo2.write(
-         reinterpret_cast<const char*>(&segmento),
-         sizeof( segmento ) );
-    }
-
-    for( int i = 0; i < 50; i++ ){
-      archivo2.write(
-         reinterpret_cast<const char*>(&salario),
-         sizeof( salario ) );
-    }
-
-    for( int i = 0; i < 50; i++ ){
-      archivo2.write(
-        reinterpret_cast<const char*>(&vacantes),
-        sizeof( vacantes ) );
-    }
 }
 
-void Puestos::verpuestos()
-{
-	system("cls");
+void Puestos::desplegar(){
 
+	system("cls");
 	fstream archivo;
 
 	int total=0;
-	int opcion;
 
-	cout<<"\n______________________________________________________________________________________"<<endl;
-	cout<<"\n------------------------- VISUALIZACION DE PUESTOS ACTUALES --------------------------"<<endl;
-	cout<<"\n--------------------------------------------------------------------------------------"<<endl;
+	cout<<"\n----------------------------------------------------------------------------------------"<<endl;
+	cout<<"\n-------------------------Tabla de información de puestos de trabajo -------------------------"<<endl;
+	cout<<"\n----------------------------------------------------------------------------------------"<<endl;
 
 	archivo.open("puestosdetrabajo.dat",ios::binary|ios::in);
 
 	if(!archivo)
 	{
-		cout<<"\n\t No has a�adido ninguna informacion al sistema";
+		cout<<"\n\t\t\tNo hay información. Empieza a añadir desde el menú principal";
 		archivo.close();
 	}
 
 	else
 	{
-		archivo >> nombrepuesto >> area >> segmento >> salario >> vacantes;
-
+		archivo >> id >> nombrepuesto >> area >> segmento >> salario >> vacantes;
 		while(!archivo.eof())
 		{
 			total++;
-			cout<<"\n\n\t Puesto de trabajo: "<< nombrepuesto <<endl;
-			cout<<"\t Area: "<< area <<endl;
-			cout<<"\t Segmento: "<< segmento <<endl;
-			cout<<"\t Salario minimo: "<< salario <<endl;
-			cout<<"\t Vacantes: "<< vacantes <<endl;
-			archivo >> nombrepuesto >> area >> segmento >> salario >> vacantes;
+			cout<<"\n\n\t\t\t ID puesto de trabajo: "<<id<<endl;
+			cout<<"\t\t\t Puesto de trabajo: "<<nombrepuesto<<endl;
+			cout<<"\t\t\t Area de trabajo: "<<area<<endl;
+            cout<<"\n\n\t\t\t Segmento de trabajo: "<<segmento<<endl;
+			cout<<"\t\t\t Salario medio: "<<salario<<endl;
+			cout<<"\t\t\t Vacantes disponibles: "<<vacantes<<endl;
+			archivo >> id >> nombrepuesto >> area >> segmento >> salario >> vacantes;
 		}
+
 		if(total==0)
 		{
-			cout<<"\n\t No ha insertado informacion, por favor verifica o empieza a ingresar datos";
+			cout<<"\n\t\t\tNo hay informacion disponible";
 		}
 	}
+	archivo.close();
+}
 
-	cout<<"Escribe 1 para regresar alV menu principal"<<endl;
-	cin>>opcion;
+void Puestos::modificar()
+{
+	system("cls");
+	fstream archivo,archivo1;
 
-    if(opcion = 1){
-        menuprincipalpuestos();
-    }
+	string buscar_id;
+	int encontrar=0;
+
+	cout<<"\n------------------------------------------------------------------------------------------"<<endl;
+	cout<<"\n-------------------Menú de modificación de datos de puestos de trabajo--------------------"<<endl;
+	cout<<"\n------------------------------------------------------------------------------------------"<<endl;
+
+	archivo.open("puestosdetrabajo.dat",ios::binary|ios::in);
+	if(!archivo)
+	{
+		cout<<"\n\t\t\tNo hay informacion disponible";
+		archivo.close();
+	}
+
+	else
+	{
+		cout<<"\n Ingrese Id del puesto de trabajo que quiere modificar: ";
+		cin>>buscar_id;
+
+		archivo1.open("puestos.dat",ios::binary|ios::app | ios::out);
+		archivo >> id >> nombrepuesto >> area >> segmento >> salario >> vacantes;
+
+		while(!archivo.eof()){
+
+			if(buscar_id!=id)
+			{
+			 archivo1<<std::left<<std::setw(15)<< id <<std::left<<std::setw(15)<< nombrepuesto <<std::left<<std::setw(15)<< area<< std::left<<std::setw(15)<< segmento <<std::left<<std::setw(15)<< salario <<std::left<<std::setw(15)<< vacantes<<"\n";
+			}
+
+			else
+			{
+				cout<<"\t\t\tIngrese ID del puesto de trabajo: ";
+				cin>>id;
+				cout<<"\t\t\tIngrese nuevo puesto de trabajo: ";
+				cin>>nombrepuesto;
+				cout<<"\t\t\tIngrese area de trabajo: ";
+				cin>>area;
+				cout<<"\t\t\tIngrese segmento de trabajo: ";
+				cin>>segmento;
+				cout<<"\t\t\tIngrese salario medio del puesto de trabajo: ";
+				cin>>salario;
+				cout<<"\t\t\tIngrese numero de vacantes disponible: ";
+				cin>>vacantes;
+				archivo1<<std::left<<std::setw(15)<< id <<std::left<<std::setw(15)<< nombrepuesto <<std::left<<std::setw(15)<< area<< std::left<<std::setw(15)<< segmento <<std::left<<std::setw(15)<< salario <<std::left<<std::setw(15)<< vacantes<<"\n";
+				encontrar++;
+			}
+
+			archivo >> id >> nombrepuesto >> area >> segmento >> salario >> vacantes;
+
+		}
+		archivo1.close();
+		archivo.close();
+		remove("puestosdetrabajo.dat");
+		rename("puestos.dat","puestosdetrabajo.dat");
+	}
+}
+
+void Puestos::search()
+{
+	system("cls");
+	fstream archivo;
+	int encontrar=0;
+	archivo.open("puestosdetrabajo.dat",ios::binary|ios::in);
+	if(!archivo)
+	{
+	    cout<<"\n---------------------------------------------------------------------------"<<endl;
+		cout<<"\n-------------------------Datos del empleado buscado------------------------"<<endl;
+		cout<<"\n---------------------------------------------------------------------------"<<endl;
+		cout<<"\n\t\t\tNo hay informacion disponible";
+	}
+
+	else
+	{
+		string buscar_id;
+		cout<<"\n---------------------------------------------------------------------------"<<endl;
+		cout<<"\n-------------------------Datos del empleado buscado------------------------"<<endl;
+		cout<<"\n---------------------------------------------------------------------------"<<endl;
+		cout<<"\nIngrese ID del puesto de trabajo que quiere buscar: ";
+		cin>>buscar_id;
+
+		archivo >> id >> nombrepuesto >> area >> segmento >> salario >> vacantes;
+
+		while(!archivo.eof())
+		{
+			if(buscar_id==id)
+			{
+				cout<<"\n\n\t\t\t ID puesto de trabajo: "<<id<<endl;
+                cout<<"\t\t\t Puesto de trabajo: "<<nombrepuesto<<endl;
+                cout<<"\t\t\t Area de trabajo: "<<area<<endl;
+                cout<<"\n\n\t\t\t Segmento de trabajo: "<<segmento<<endl;
+                cout<<"\t\t\t Salario medio: "<<salario<<endl;
+                cout<<"\t\t\t Vacantes disponibles: "<<vacantes<<endl;
+				encontrar++;
+			}
+			archivo >> id >> nombrepuesto >> area >> segmento >> salario >> vacantes;
+		}
+		if(encontrar==0)
+		{
+			cout<<"\n\t\t\t Puesto de trabajo no encontrado. Por favor verificar";
+		}
+		archivo.close();
+	}
+}
+
+
+void Puestos::eliminar()
+{
+	system("cls");
+	fstream archivo, archivo1;
+
+	string buscar_id;
+	int encontrar=0;
+
+	cout<<"\n-----------------------------------------------------------------------------------"<<endl;
+	cout<<"\n-----------------------Menú para eliminación de información-----------------------"<<endl;
+	cout<<"\n-----------------------------------------------------------------------------------"<<endl;
+
+	archivo.open("puestosdetrabajo.dat",ios::binary|ios::in);
+
+	if(!archivo){
+		cout<<"\n\t\t\tNo hay informacion disponible";
+		archivo.close();
+	}
+
+	else
+	{
+		cout<<"\n Ingrese el ID del puesto de trabajo que desee borrar: ";
+		cin>>buscar_id;
+
+		archivo1.open("registro.dat",ios::binary|ios::app | ios::out);
+
+		archivo >> id >> nombrepuesto >> area >> segmento >> salario >> vacantes;
+
+		while(!archivo.eof())
+		{
+			if(buscar_id!= id)
+			{
+				archivo1<<std::left<<std::setw(15)<< id <<std::left<<std::setw(15)<< nombrepuesto <<std::left<<std::setw(15)<< area<< std::left<<std::setw(15)<< segmento <<std::left<<std::setw(15)<< salario <<std::left<<std::setw(15)<< vacantes<<"\n";
+			}
+			else
+			{
+				encontrar++;
+				cout << "\n\t\t\tBorrado de informacion exitoso";
+			}
+			archivo >> id >> nombrepuesto >> area >> segmento >> salario >> vacantes;
+		}
+
+		if(encontrar==0)
+		{
+			cout<<"\n\t\t\t ID de puesto de trabajo no encontrado. Por favor, verificar";
+		}
+
+		archivo1.close();
+		archivo.close();
+		remove("puestosdetrabajo.dat");
+		rename("puestoss.dat","puestosdetrabajo.dat");
+	}
 }

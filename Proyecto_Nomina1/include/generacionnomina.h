@@ -16,7 +16,7 @@ class generacionnomina
 
     protected:
         private:
-            double horast, sueldomedio, iva, sueldofinal, sueldoiva;
+            double horast, sueldomedio, iva, sueldofinal, sueldoiva, bonificacion, sueldobonificacion, isr, sueldoisr, igss, sueldoigss, sueldocomb;
 };
 
 #endif // GENERACIONNOMINA_H

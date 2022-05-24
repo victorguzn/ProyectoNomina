@@ -1,6 +1,8 @@
 #include <iostream>
-#ifndef PUESTOS_H
-#define PUESTOS_H
+#ifndef EMPLEADOS_H
+#define EMPLEADOS_H
+#include "menus.h"
+
 using namespace std;
 
 class Puestos
@@ -8,14 +10,16 @@ class Puestos
     public:
         public:
         void menuprincipalpuestos();
-		void nuevopuesto();
-		void verpuestos();
+		void insert();
+		void desplegar();
+		void modificar();
+		void search();
+		void eliminar();
         Puestos();
         virtual ~Puestos();
 
     protected:
-        private:
-            string nombrepuesto, area, segmento, salario, vacantes;
+    private:string id,nombrepuesto, area, segmento, salario, vacantes;
 };
 
-#endif
+#endif // EMPLEADOS_H

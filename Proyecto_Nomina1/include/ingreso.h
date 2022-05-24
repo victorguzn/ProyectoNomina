@@ -7,6 +7,7 @@ using namespace std;
 class ingreso
 {
     public:
+        void bitacora();
         ingreso();
         virtual ~ingreso();
         bool loginUsuarios();
